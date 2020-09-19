@@ -55,5 +55,11 @@ namespace workspacer
         /// the behavior of this method is implementation defined
         /// </summary>
         void DecrementNumInPrimary();
+
+        /// <summary>
+        /// flip primary area from left to right side
+        /// the behavior of this method could be implementation defined
+        /// </summary>
+        void FlipPrimaryArea();
     }
 }

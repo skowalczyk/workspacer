@@ -118,6 +118,11 @@ namespace workspacer
         void ExpandPrimaryArea(); // mod-l
 
         /// <summary>
+        /// flip primary area left-right
+        /// </summary>
+        void FlipPrimaryArea(); // mod-l
+
+        /// <summary>
         /// increase the number of primary windows in the active layout
         /// </summary>
         void IncrementNumberOfPrimaryWindows(); // mod-comma

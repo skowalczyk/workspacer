@@ -299,6 +299,11 @@ namespace workspacer
             GetLayoutEngine().ExpandPrimaryArea();
             DoLayout();
         }
+        public void FlipPrimaryArea()
+        {
+            GetLayoutEngine().FlipPrimaryArea();
+            DoLayout();
+        }
 
         public void IncrementNumberOfPrimaryWindows()
         {

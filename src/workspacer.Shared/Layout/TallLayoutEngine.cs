@@ -14,6 +14,7 @@ namespace workspacer
 
         private int _numInPrimaryOffset = 0;
         private double _primaryPercentOffset = 0;
+        private bool _primaryFlip = false;
 
         public TallLayoutEngine() : this(1, 0.5, 0.03) { }
 
@@ -52,16 +53,44 @@ namespace workspacer
 
             for (var i = 0; i < numWindows; i++)
             {
+                int windowXPosition, windowYPosition;
+                int windowWidth, windowHeight;
+
                 if (i < numInPrimary)
                 {
                     list.Add(new WindowLocation(0, i * primaryHeight, primaryWidth, primaryHeight, WindowState.Normal));
+                    windowXPosition = 0;
+                    windowWidth = primaryWidth;
+                    windowHeight = primaryHeight;
+                    windowYPosition = i * windowHeight;
+                    if (_primaryFlip && numInPrimary < numWindows)
+                    {
+                        windowXPosition = primaryWidth;
+                        windowWidth = secondaryWidth;
+                    }
                 }
                 else
                 {
                     list.Add(new WindowLocation(primaryWidth, (i - numInPrimary) * height, secondaryWidth, height, WindowState.Normal));
+                    windowXPosition = primaryWidth;
+                    windowWidth = secondaryWidth;
+                    windowHeight = height;
+                    windowYPosition = (i - numInPrimary) * windowHeight;
+                    if (_primaryFlip)
+                    {
+                        windowXPosition = 0;
+                        windowWidth = primaryWidth;
+                    }
                 }
+
+                list.Add(new WindowLocation(windowXPosition, windowYPosition, windowWidth, windowHeight, WindowState.Normal));
             }
             return list;
+        }
+        public void FlipPrimaryArea()
+        {
+            _primaryFlip = !_primaryFlip;
+            _primaryPercentOffset = -_primaryPercentOffset;
         }
 
         public void ShrinkPrimaryArea()

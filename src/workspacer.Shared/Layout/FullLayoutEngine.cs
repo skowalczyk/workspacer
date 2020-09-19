@@ -44,6 +44,7 @@ namespace workspacer
         public void ResetPrimaryArea() { }
         public void IncrementNumInPrimary() { }
         public void DecrementNumInPrimary() { }
+        public void FlipPrimaryArea() { }
 
         private WindowState GetDesiredState(IWindow window, bool forceNormal = false)
         {
