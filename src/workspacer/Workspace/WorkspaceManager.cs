@@ -151,6 +151,52 @@ namespace workspacer
             targetWorkspace.FocusLastFocusedWindow();
         }
 
+        public void SwitchToPreviousMonitor()
+        {
+            var focusedMonitor = _context.MonitorContainer.FocusedMonitor;
+            int focusedMonitorIndex = -1;
+            for (int i = 0; i < _context.MonitorContainer.NumMonitors; i++)
+            {
+                var monitor = _context.MonitorContainer.GetMonitorAtIndex(i);
+
+                if (focusedMonitor == monitor)
+                {
+                    focusedMonitorIndex = i;
+                    break;
+                }
+            }
+
+            focusedMonitorIndex--;
+            if(focusedMonitorIndex < 0)
+            {
+                focusedMonitorIndex = _context.MonitorContainer.NumMonitors - 1;
+            }
+            SwitchFocusedMonitor(focusedMonitorIndex);
+        }
+
+        public void SwitchToNextMonitor()
+        {
+            var focusedMonitor = _context.MonitorContainer.FocusedMonitor;
+            int focusedMonitorIndex = -1;
+            for (int i = 0; i < _context.MonitorContainer.NumMonitors; i++)
+            {
+                var monitor = _context.MonitorContainer.GetMonitorAtIndex(i);
+
+                if (focusedMonitor == monitor)
+                {
+                    focusedMonitorIndex = i;
+                    break;
+                }
+            }
+
+            focusedMonitorIndex++;
+            if(focusedMonitorIndex >= _context.MonitorContainer.NumMonitors)
+            {
+                focusedMonitorIndex = 0;
+            }
+            SwitchFocusedMonitor(focusedMonitorIndex);
+        }
+
         public void SwitchFocusedMonitor(int index)
         {
             Logger.Debug("SwitchFocusedMonitor({0})", index);
@@ -204,6 +250,52 @@ namespace workspacer
 
                 nextWindow?.Focus();
             }
+        }
+        public void MoveFocusedWindowToNextMonitor()
+        {
+            var focusedMonitor = _context.MonitorContainer.FocusedMonitor;
+            int currentMonitorIndex = -1;
+            for (int i = 0; i < _context.MonitorContainer.NumMonitors; i++)
+            {
+                var monitor = _context.MonitorContainer.GetMonitorAtIndex(i);
+
+                if (focusedMonitor == monitor)
+                {
+                    currentMonitorIndex  = i;
+                    break;
+                }
+            }
+
+            int nextMonitorIndex = currentMonitorIndex+=1;
+            if(nextMonitorIndex >= _context.MonitorContainer.NumMonitors)
+            {
+                nextMonitorIndex = 0;
+            }
+
+            MoveFocusedWindowToMonitor(nextMonitorIndex);
+        }
+        public void MoveFocusedWindowToPreviousMonitor()
+        {
+            var focusedMonitor = _context.MonitorContainer.FocusedMonitor;
+            int currentMonitorIndex = -1;
+            for (int i = 0; i < _context.MonitorContainer.NumMonitors; i++)
+            {
+                var monitor = _context.MonitorContainer.GetMonitorAtIndex(i);
+
+                if (focusedMonitor == monitor)
+                {
+                    currentMonitorIndex = i;
+                    break;
+                }
+            }
+
+            int nextMonitorIndex = currentMonitorIndex -= 1;
+            if (nextMonitorIndex < 0)
+            {
+                nextMonitorIndex = _context.MonitorContainer.NumMonitors - 1;
+            }
+
+            MoveFocusedWindowToMonitor(nextMonitorIndex);
         }
 
         public void MoveFocusedWindowToMonitor(int index)

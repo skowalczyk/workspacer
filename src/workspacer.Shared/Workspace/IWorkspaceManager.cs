@@ -21,6 +21,8 @@ namespace workspacer
         void SwitchToWorkspace(int index);
         void SwitchToWorkspace(IWorkspace workspace);
         void SwitchToLastFocusedWorkspace();
+        void SwitchToPreviousMonitor();
+        void SwitchToNextMonitor();
         void SwitchMonitorToWorkspace(int monitorIndex, int workspaceIndex);
         void SwitchToNextWorkspace();
         void SwitchToPreviousWorkspace();
@@ -28,6 +30,8 @@ namespace workspacer
         void SwitchFocusedMonitorToMouseLocation();
         void MoveFocusedWindowToWorkspace(int index);
         void MoveFocusedWindowToMonitor(int index);
+        void MoveFocusedWindowToNextMonitor();
+        void MoveFocusedWindowToPreviousMonitor(); 
         void MoveAllWindows(IWorkspace source, IWorkspace dest);
 
         void ForceWorkspaceUpdate();
