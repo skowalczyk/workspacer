@@ -1,0 +1,91 @@
+#r "D:\git\workspacer\src\workspacer\bin\Release\workspacer.Shared.dll"
+#r "D:\git\workspacer\src\workspacer\bin\Release\plugins\workspacer.Bar\workspacer.Bar.dll"
+#r "D:\git\workspacer\src\workspacer\bin\Release\plugins\workspacer.ActionMenu\workspacer.ActionMenu.dll"
+#r "D:\git\workspacer\src\workspacer\bin\Release\plugins\workspacer.FocusIndicator\workspacer.FocusIndicator.dll"
+
+using System;
+using System.Diagnostics;
+using workspacer;
+using workspacer.Bar;
+using workspacer.ActionMenu;
+using workspacer.FocusIndicator;
+using workspacer.Bar.Widgets;
+
+
+Action<IConfigContext> doConfig = (context) =>
+{
+    var bar = new BarPluginConfig()
+    {
+        BarTitle = "workspacer.Bar",
+        BarHeight = 20,
+        FontSize = 12,
+        DefaultWidgetForeground = Color.White,
+        DefaultWidgetBackground = Color.Black,
+        Background = Color.Black,
+        LeftWidgets = () => new IBarWidget[] { new WorkspaceWidget(), new TextWidget(": "), new TitleWidget() },
+        RightWidgets = () => new IBarWidget[] { new TimeWidget(200, "HH:mm:ss"), new ActiveLayoutWidget() },
+    };
+    context.AddBar(bar);
+    context.AddFocusIndicator();
+
+    var actionMenuContext = new ActionMenuPluginConfig
+    {
+        KeybindKey = Keys.P,
+        KeybindMod = KeyModifiers.LAlt | KeyModifiers.LShift,
+    };
+    var actionMenu = context.AddActionMenu(actionMenuContext);
+
+    //g the StickyWorkspaceContainer is useful if you want to emulate workspace modes in awesome/dwm
+    //g where workspaces are specifically assigned to monitors
+
+    //g the container has two modes:
+    var WorkContainer = new StickyWorkspaceContainer(context, StickyWorkspaceIndexMode.Local);
+    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "1");
+    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "2");
+    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "3");
+    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "4");
+    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "5");
+    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(1), "1");
+    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(1), "2");
+    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(1), "3");
+    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(1), "4");
+    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(1), "5");
+    context.WorkspaceContainer = WorkContainer;
+
+    //g or:
+    // context.WorkspaceContainer = new StickyWorkspaceContainer(context, defaultLayouts, StickyWorkspaceIndexMode.Global);
+    //g you can also not specify a mode, because "Global" is the default
+    //context.WorkspaceContainer = new StickyWorkspaceContainer(context);
+
+    //context.WorkspaceContainer.CreateWorkspaces("one", "two", "three", "four", "five");
+
+    context.WindowRouter.AddFilter((window) => !window.Title.Contains("Wox"));
+    //context.WindowRouter.AddRoute((window) => window.Title.Contains("Visual Studio") ? context.WorkspaceContainer["1"] : null);
+    //context.WindowRouter.AddRoute((window) => window.Title.Contains("Unreal Editor") ? context.WorkspaceContainer["2"] : null);
+    //context.WindowRouter.AddRoute((window) => window.Title.Contains("UE4Editor.exe") ? context.WorkspaceContainer["2"] : null);
+
+    context.Keybinds.Subscribe(KeyModifiers.LAlt | KeyModifiers.LShift, Keys.Oemcomma, 
+        () => context.Workspaces.MoveFocusedWindowToNextMonitor(), "Move window to previous monitor");
+    
+    context.Keybinds.Subscribe(KeyModifiers.LAlt | KeyModifiers.LShift, Keys.OemPeriod, 
+        () => context.Workspaces.MoveFocusedWindowToPreviousMonitor(), "Move window to next monitor");
+
+    context.Keybinds.Subscribe(KeyModifiers.LAlt, Keys.Oemcomma, 
+        () => context.Workspaces.SwitchToNextMonitor(), "Switch to next monitor");
+    
+    context.Keybinds.Subscribe(KeyModifiers.LAlt, Keys.OemPeriod, 
+        () => context.Workspaces.SwitchToPreviousMonitor(), "Switch to previous monitor");
+
+    context.Keybinds.Subscribe(KeyModifiers.LAlt, Keys.I,
+        () => context.Workspaces.FocusedWorkspace.IncrementNumberOfPrimaryWindows(), "increment # primary windows");
+
+    context.Keybinds.Subscribe(KeyModifiers.LAlt, Keys.D,
+        () => context.Workspaces.FocusedWorkspace.DecrementNumberOfPrimaryWindows(), "decrement # primary windows");
+
+    context.Keybinds.Subscribe(KeyModifiers.LAlt | KeyModifiers.LShift, Keys.Enter, () => Process.Start("wt.exe", ""));
+
+    context.Keybinds.Subscribe(KeyModifiers.LAlt | KeyModifiers.LShift, Keys.Space, 
+        () => context.Workspaces.FocusedWorkspace.FlipPrimaryArea(), "Flip primary area from left to right");
+
+};
+return doConfig;
