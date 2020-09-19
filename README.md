@@ -1,3 +1,6 @@
+1. Sync and build,
+2. use "workspacer.config.csx.mysetup" with Workspacer configuration, copy it to %HOME/.workspacer/
+
 # workspacer
 
 ### a tiling window manager for Windows 10
