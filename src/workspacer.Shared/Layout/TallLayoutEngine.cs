@@ -58,7 +58,6 @@ namespace workspacer
 
                 if (i < numInPrimary)
                 {
-                    list.Add(new WindowLocation(0, i * primaryHeight, primaryWidth, primaryHeight, WindowState.Normal));
                     windowXPosition = 0;
                     windowWidth = primaryWidth;
                     windowHeight = primaryHeight;
@@ -71,7 +70,6 @@ namespace workspacer
                 }
                 else
                 {
-                    list.Add(new WindowLocation(primaryWidth, (i - numInPrimary) * height, secondaryWidth, height, WindowState.Normal));
                     windowXPosition = primaryWidth;
                     windowWidth = secondaryWidth;
                     windowHeight = height;
