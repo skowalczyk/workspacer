@@ -1,7 +1,7 @@
-#r "D:\git\workspacer\src\workspacer\bin\Release\workspacer.Shared.dll"
-#r "D:\git\workspacer\src\workspacer\bin\Release\plugins\workspacer.Bar\workspacer.Bar.dll"
-#r "D:\git\workspacer\src\workspacer\bin\Release\plugins\workspacer.ActionMenu\workspacer.ActionMenu.dll"
-#r "D:\git\workspacer\src\workspacer\bin\Release\plugins\workspacer.FocusIndicator\workspacer.FocusIndicator.dll"
+#r "C:\Program Files\workspacer\workspacer.Shared.dll"
+#r "C:\Program Files\workspacer\plugins\workspacer.Bar\workspacer.Bar.dll"
+#r "C:\Program Files\workspacer\plugins\workspacer.ActionMenu\workspacer.ActionMenu.dll"
+#r "C:\Program Files\workspacer\plugins\workspacer.FocusIndicator\workspacer.FocusIndicator.dll"
 
 using System;
 using System.Diagnostics;
@@ -40,16 +40,25 @@ Action<IConfigContext> doConfig = (context) =>
 
     //g the container has two modes:
     var WorkContainer = new StickyWorkspaceContainer(context, StickyWorkspaceIndexMode.Local);
-    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "1");
-    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "2");
-    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "3");
-    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "4");
-    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "5");
-    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(1), "1");
-    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(1), "2");
-    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(1), "3");
-    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(1), "4");
-    WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(1), "5");
+    if(context.MonitorContainer.NumMonitors == 1)
+    {
+        WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "1");
+        WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "2");
+        WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "3");
+        WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "4");
+        WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "5");
+    }
+    else
+    {
+        WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "1");
+        WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "2");
+        WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "3");
+        WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(0), "4");
+        WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(1), "1");
+        WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(1), "2");
+        WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(1), "3");
+        WorkContainer.CreateWorkspace(context.MonitorContainer.GetMonitorAtIndex(1), "4");
+    }
     context.WorkspaceContainer = WorkContainer;
 
     //g or:
